@@ -1,0 +1,47 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --night-1: #100c22;
+  --night-2: #1d1535;
+  --night-3: #2c1f4a;
+  --dusk: #4a2a55;
+  --ivory: #fdfbf2;
+  --ivory-dim: rgba(253, 251, 242, 0.72);
+  --gold: #f0d98c;
+  --rose: #e7b9c8;
+
+  --bn: "Noto Serif Bengali", serif;
+  --en: "Cormorant Garamond", Georgia, serif;
+  --script: "Great Vibes", cursive;
+
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--en);
+  color: var(--ivory);
+  background: var(--night-1);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,504 @@
+/* ───────────────────────── the scene ───────────────────────── */
+
+.scene {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  cursor: pointer;
+  --mx: 0;
+  background: linear-gradient(
+    180deg,
+    #232843 0%,
+    #1d1f38 34%,
+    #25264a 58%,
+    #1c2336 76%,
+    #101a16 100%
+  );
+}
+
+/* ───────────────────────── sky ───────────────────────── */
+
+.sky {
+  position: absolute;
+  inset: 0 0 22vh 0;
+}
+
+.moon-glow {
+  position: absolute;
+  top: 6vh;
+  right: 12vw;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(253, 250, 235, 0.5) 0%, rgba(253, 250, 235, 0.12) 38%, transparent 68%);
+  filter: blur(6px);
+  animation: moonPulse 8s ease-in-out infinite alternate;
+}
+
+@keyframes moonPulse {
+  from { opacity: 0.65; }
+  to { opacity: 1; }
+}
+
+.cloud {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(38px);
+  opacity: 0.85;
+}
+
+.c1 {
+  top: -6vh;
+  left: -10vw;
+  width: 70vw;
+  height: 26vh;
+  background: #181a30;
+  animation: cloudDrift 70s linear infinite;
+}
+
+.c2 {
+  top: 4vh;
+  left: 30vw;
+  width: 60vw;
+  height: 22vh;
+  background: #21223e;
+  animation: cloudDrift 95s linear infinite reverse;
+}
+
+.c3 {
+  top: 14vh;
+  left: -20vw;
+  width: 55vw;
+  height: 18vh;
+  background: #1a1c33;
+  opacity: 0.7;
+  animation: cloudDrift 80s linear infinite;
+}
+
+.c4 {
+  top: 0;
+  right: -15vw;
+  width: 50vw;
+  height: 20vh;
+  background: #262849;
+  opacity: 0.6;
+  animation: cloudDrift 110s linear infinite reverse;
+}
+
+@keyframes cloudDrift {
+  from { transform: translateX(-6vw); }
+  to { transform: translateX(14vw); }
+}
+
+/* ───────────────────────── ground + mist ───────────────────────── */
+
+.ground {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 30vh;
+  background:
+    radial-gradient(ellipse 130% 100% at 50% 120%, #16271c 30%, transparent 75%),
+    linear-gradient(180deg, transparent 0%, #121f17 45%, #0b130e 100%);
+}
+
+.mist {
+  position: absolute;
+  left: -20%;
+  width: 140%;
+  height: 13vh;
+  border-radius: 50%;
+  filter: blur(26px);
+  background: linear-gradient(180deg, rgba(190, 205, 225, 0.1), rgba(190, 205, 225, 0.03));
+  pointer-events: none;
+  z-index: 4;
+}
+
+.m1 {
+  bottom: 9vh;
+  animation: mistDrift 26s ease-in-out infinite alternate;
+}
+
+.m2 {
+  bottom: 1vh;
+  opacity: 0.8;
+  animation: mistDrift 34s ease-in-out infinite alternate-reverse;
+}
+
+@keyframes mistDrift {
+  from { transform: translateX(-5%); }
+  to { transform: translateX(6%); }
+}
+
+/* ───────────────────────── garden rows ───────────────────────── */
+
+.garden {
+  position: absolute;
+  inset: 0;
+}
+
+.row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transform: translateX(calc(var(--mx) * var(--par) * -1px));
+  transition: transform 0.6s ease-out;
+}
+
+.plant-slot {
+  position: absolute;
+  transform-origin: bottom center;
+}
+
+.plant {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.row-back {
+  z-index: 1;
+  filter: blur(1.6px) brightness(0.5) saturate(0.85);
+}
+
+.row-back .plant-slot {
+  bottom: 19vh;
+  width: clamp(80px, 12vw, 130px);
+  margin-left: clamp(-65px, -6vw, -40px);
+}
+
+.row-mid {
+  z-index: 2;
+  filter: blur(0.5px) brightness(0.74);
+}
+
+.row-mid .plant-slot {
+  bottom: 10vh;
+  width: clamp(120px, 18vw, 185px);
+  margin-left: clamp(-92px, -9vw, -60px);
+}
+
+.row-front {
+  z-index: 3;
+}
+
+.row-front .plant-slot {
+  bottom: -3vh;
+  width: clamp(180px, 27vw, 270px);
+  margin-left: clamp(-135px, -13.5vw, -90px);
+  filter: drop-shadow(0 0 26px rgba(253, 251, 242, 0.12));
+}
+
+/* ───────────────────────── plant life ───────────────────────── */
+
+.plant-sway {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+  animation: sway var(--swayDur, 7s) ease-in-out var(--swayDelay, 0s) infinite alternate;
+}
+
+@keyframes sway {
+  from { transform: rotate(-2.8deg); }
+  to { transform: rotate(2.8deg); }
+}
+
+.plant-bend {
+  transform-box: fill-box;
+  transform-origin: 50% 100%;
+}
+
+.gust .plant-bend {
+  animation: gustBend 2.7s ease-in-out both;
+}
+
+@keyframes gustBend {
+  0% { transform: rotate(0deg); }
+  35% { transform: rotate(6.5deg); }
+  65% { transform: rotate(-2.5deg); }
+  100% { transform: rotate(0deg); }
+}
+
+.leaf {
+  transform-box: fill-box;
+  animation: leafSway 5.5s ease-in-out infinite alternate;
+}
+
+.leaf-r { transform-origin: 0% 50%; animation-delay: -0.8s; }
+.leaf-l { transform-origin: 100% 50%; animation-delay: -2.1s; }
+.leaf-l2 { transform-origin: 0% 60%; animation-delay: -1.4s; }
+
+@keyframes leafSway {
+  from { transform: rotate(-2deg); }
+  to { transform: rotate(3deg); }
+}
+
+.petal {
+  transform-box: fill-box;
+  transform-origin: center 90%;
+  transform: scale(0);
+  animation:
+    bloom 1.9s cubic-bezier(0.18, 0.9, 0.32, 1.2) var(--pd, 0s) forwards,
+    breathe 4.5s ease-in-out calc(var(--pd, 0s) + 2s) infinite alternate;
+}
+
+.petal-still {
+  animation: bloom 1.9s cubic-bezier(0.18, 0.9, 0.32, 1.2) var(--pd, 0s) forwards;
+}
+
+@keyframes bloom {
+  0% { transform: scale(0) rotate(-24deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+@keyframes breathe {
+  from { transform: scale(1); }
+  to { transform: scale(1.05); }
+}
+
+.stamens,
+.bud {
+  transform-box: fill-box;
+  transform-origin: center 90%;
+  transform: scale(0);
+  animation: bloom 1.6s cubic-bezier(0.18, 0.9, 0.32, 1.2) var(--pd, 0s) forwards;
+}
+
+.filament {
+  fill: none;
+  stroke: #f7efce;
+  stroke-width: 2;
+  stroke-linecap: round;
+}
+
+.anther {
+  fill: #f0d98c;
+}
+
+/* ───────────────────────── rain + weather ───────────────────────── */
+
+.rain {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.lightning {
+  position: absolute;
+  inset: 0;
+  z-index: 6;
+  pointer-events: none;
+  background: radial-gradient(ellipse 80% 55% at 60% 0%, rgba(225, 232, 255, 0.85), rgba(190, 200, 255, 0.18) 55%, transparent 80%);
+  opacity: 0;
+  animation: flashTwice 1.3s ease-out;
+}
+
+@keyframes flashTwice {
+  0% { opacity: 0; }
+  6% { opacity: 0.9; }
+  14% { opacity: 0.08; }
+  22% { opacity: 0.55; }
+  40% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 7;
+  pointer-events: none;
+  background: radial-gradient(ellipse 120% 90% at 50% 45%, transparent 55%, rgba(5, 6, 14, 0.55) 100%);
+}
+
+/* ───────────────────────── fireflies ───────────────────────── */
+
+.fireflies {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+.firefly {
+  position: absolute;
+  animation: drift 14s ease-in-out infinite alternate;
+}
+
+.firefly i {
+  display: block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #f0d98c;
+  box-shadow: 0 0 10px 3px rgba(240, 217, 140, 0.55);
+  animation: blink 3s ease-in-out infinite;
+}
+
+@keyframes drift {
+  0% { transform: translate(0, 0); }
+  33% { transform: translate(-45px, -50px); }
+  66% { transform: translate(40px, -95px); }
+  100% { transform: translate(-25px, -140px); }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0; }
+  50% { opacity: 1; }
+}
+
+/* ───────────────────────── words ───────────────────────── */
+
+.overlay-top {
+  position: absolute;
+  top: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 8;
+  width: min(720px, 92vw);
+  text-align: center;
+  pointer-events: none;
+}
+
+.title {
+  font-family: var(--bn);
+  font-weight: 700;
+  font-size: clamp(42px, 8vw, 78px);
+  line-height: 1.3;
+  background: linear-gradient(180deg, #fffef8 20%, #ddd2ae 80%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 50px rgba(240, 217, 140, 0.3);
+  opacity: 0;
+  animation: riseIn 1.8s ease 0.6s forwards;
+}
+
+.subtitle {
+  margin-top: 6px;
+  font-family: var(--bn);
+  font-weight: 300;
+  font-size: clamp(14px, 2vw, 18px);
+  letter-spacing: 0.12em;
+  color: rgba(253, 251, 242, 0.5);
+  opacity: 0;
+  animation: riseIn 1.8s ease 1.2s forwards;
+}
+
+@keyframes riseIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.signature {
+  position: absolute;
+  right: 4vw;
+  bottom: 4vh;
+  z-index: 8;
+  font-family: var(--bn);
+  font-weight: 300;
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: rgba(231, 185, 200, 0.8);
+  text-shadow: 0 2px 12px rgba(5, 6, 14, 0.9);
+  pointer-events: none;
+  opacity: 0;
+  animation: riseIn 2s ease 2s forwards;
+}
+
+/* ───────────────────────── controls (bottom-left) ───────────────────────── */
+
+.controls {
+  position: absolute;
+  left: 4vw;
+  bottom: 4vh;
+  z-index: 9;
+  display: flex;
+  gap: 10px;
+  opacity: 0;
+  animation: riseIn 2s ease 2.4s forwards;
+}
+
+.ctrl-btn {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  background: rgba(253, 251, 242, 0.07);
+  border: 1px solid rgba(253, 251, 242, 0.2);
+  border-radius: 50%;
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+}
+
+.ctrl-btn:hover {
+  transform: scale(1.1);
+}
+
+.ctrl-btn.on {
+  background: rgba(240, 217, 140, 0.16);
+  border-color: rgba(240, 217, 140, 0.5);
+}
+
+/* ───────────────────────── tap bursts ───────────────────────── */
+
+.burst {
+  position: absolute;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.burst-petal {
+  position: absolute;
+  width: 13px;
+  height: 18px;
+  margin: -9px 0 0 -6px;
+  background: linear-gradient(160deg, #fdfcf5, #ddd8c4);
+  border-radius: 80% 10% 80% 10%;
+  transform: rotate(var(--a));
+  animation: burstFly 2.6s ease-out forwards;
+}
+
+@keyframes burstFly {
+  0% { transform: rotate(var(--a)) translateY(0) scale(0.4); opacity: 1; }
+  45% { transform: rotate(var(--a)) translateY(-58px) scale(1); opacity: 1; }
+  100% { transform: rotate(calc(var(--a) + 140deg)) translateY(30px) scale(0.9); opacity: 0; }
+}
+
+.burst-line {
+  position: absolute;
+  left: 0;
+  top: -34px;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 72vw;
+  font-family: var(--bn);
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: #f3dd96;
+  text-shadow: 0 2px 14px rgba(5, 6, 14, 0.95);
+  animation: burstText 3.2s ease forwards;
+}
+
+@keyframes burstText {
+  0% { opacity: 0; transform: translate(-50%, 8px); }
+  15% { opacity: 1; transform: translate(-50%, 0); }
+  75% { opacity: 1; }
+  100% { opacity: 0; transform: translate(-50%, -26px); }
+}
+
+/* ───────────────────────── small screens ───────────────────────── */
+
+@media (max-width: 600px) {
+  .row-back .plant-slot { width: 21vw; margin-left: -10.5vw; }
+  .row-mid .plant-slot { width: 30vw; margin-left: -15vw; }
+  .row-front .plant-slot { width: 44vw; margin-left: -22vw; }
+  .moon-glow { right: 2vw; width: 160px; height: 160px; }
+  .signature { bottom: 12vh; }
+  .controls { bottom: 4vh; }
+}
